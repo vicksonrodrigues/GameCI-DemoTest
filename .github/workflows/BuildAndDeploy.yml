@@ -14,8 +14,6 @@ permissions:
 
 env:
   UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-  UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-  UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
 jobs:
   
@@ -65,7 +63,7 @@ jobs:
           
   buildWebGL:
     name: Build for WebGL 🖥️
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip')}}
     strategy:
       fail-fast: false
@@ -97,10 +95,6 @@ jobs:
             Library-build-
             Library-
       - uses: game-ci/unity-builder@v2
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
           buildName: DemoGameCI-WebGL
@@ -114,7 +108,7 @@ jobs:
   deployToBranch:
     needs: buildWindows
     name: Deploy to Builds branch 🚀
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -137,7 +131,7 @@ jobs:
   deployPages:
     needs: buildWebGL
     name: Deploy to Github Pages 🚀
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
