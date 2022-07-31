@@ -63,7 +63,7 @@ jobs:
           
   buildWebGL:
     name: Build for WebGL 🖥️
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, '#skip')}}
     strategy:
       fail-fast: false
@@ -108,7 +108,7 @@ jobs:
   deployToBranch:
     needs: buildWindows
     name: Deploy to Builds branch 🚀
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -131,7 +131,7 @@ jobs:
   deployPages:
     needs: buildWebGL
     name: Deploy to Github Pages 🚀
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
