@@ -54,11 +54,11 @@ jobs:
       - uses: game-ci/unity-builder@v2
         with:
           targetPlatform: StandaloneWindows64
-          buildName: DemoGameGI-Windows64
+          buildName: DemoGameCI-Windows64
 
       - uses: actions/upload-artifact@v2
         with:
-          name: Return-of-Forgotten-King-Windows64
+          name: DemoGameCI-Windows64
           path: build/StandaloneWindows64
           
   buildWebGL:
@@ -97,11 +97,11 @@ jobs:
       - uses: game-ci/unity-builder@v2
         with:
           targetPlatform: WebGL
-          buildName: Return-of-Forgotten-King-WebGL
+          buildName: DemoGameCI-WebGL
 
       - uses: actions/upload-artifact@v2
         with:
-          name: DemoGameGI-WebGL
+          name: DemoGameCI-WebGL
           path: build/WebGL
   
   
@@ -116,7 +116,7 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: DemoGameCI-Windows64
-          path: ROFK
+          path: DemoGameCI
       
       - name: 'Echo download path'
         run: echo ${{steps.download.outputs.download-path}}
@@ -125,8 +125,27 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.4
         with:
           branch: WindowsBuild
-          folder: ROFK
-          target-folder: Return-Of-Forgotten-King
+          folder: DemoGameCI
+          target-folder: DemoGameCI
+          
+  deployPages:
+    needs: buildWebGL
+    name: Deploy to Github Pages 🚀
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: DemoGameCI-WebGL
+          path: DemoGameCI
+
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: DemoGameCI/DemoGameCI-WebGL
 
   
           ##  Any commit message that includes #major, #minor, #patch, or #none will trigger the respective version bump
